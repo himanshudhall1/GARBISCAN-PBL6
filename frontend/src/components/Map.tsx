@@ -19,9 +19,8 @@ interface Location {
 }
 
 export default function MapComponent({ locations }: { locations: Location[] }) {
-  if (!locations || locations.length === 0) return <div>Loading map...</div>;
-
-  const center: [number, number] = [30.517, 76.660];
+  const points = locations?.length ? locations : [{ name: "Campus", lat: 30.517, lon: 76.66 }];
+  const center: [number, number] = [points[0].lat, points[0].lon];
 
   return (
     <MapContainer center={center} zoom={16} scrollWheelZoom={false} className="w-full h-full rounded-lg shadow-md border-2 border-[#8b6d4b]">
@@ -29,7 +28,7 @@ export default function MapComponent({ locations }: { locations: Location[] }) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {locations.map((loc) => (
+      {points.map((loc) => (
         <Marker key={loc.name} position={[loc.lat, loc.lon]}>
           <Popup>
             <div className="font-bold text-[#4a3b2c]">{loc.name}</div>
